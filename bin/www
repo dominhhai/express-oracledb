@@ -8,14 +8,15 @@ var cluster = require('cluster')
 var app = require('../app')
 var debug = require('debug')('graph:server')
 var http = require('http')
-
+var database = require('../models/model')
+var server
+var openHttpConnections = {}
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
-
 
 if (cluster.isMaster) {
   var cpuCount = require('os').cpus().length
@@ -60,11 +61,11 @@ if (cluster.isMaster) {
     switch (error.code) {
       case 'EACCES':
         console.error(bind + ' requires elevated privileges')
-        process.exit(1)
+        shutdown()
         break
       case 'EADDRINUSE':
         console.error(bind + ' is already in use')
-        process.exit(1)
+        shutdown()
         break
       default:
         throw error
@@ -75,6 +76,29 @@ if (cluster.isMaster) {
     var addr = server.address()
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
     console.log('Woker(' + cluster.worker.id + ') Listening on ' + bind)
+  })
+
+  server.on('connection', function(conn) {
+    var key = conn.remoteAddress + ':' + (conn.remotePort || '')
+    openHttpConnections[key] = conn
+    conn.on('close', function() {
+      delete openHttpConnections[key]
+    })
+  })
+
+  process.on('uncaughtException', function(err) {
+    console.error('Uncaught exception ', err)
+    shutdown()
+  })
+
+  process.on('SIGTERM', function () {
+    console.log('Received SIGTERM')
+    shutdown()
+  })
+
+  process.on('SIGINT', function () {
+    console.log('Received SIGINT')
+    shutdown()
   })
 }
 
@@ -96,4 +120,20 @@ function normalizePort(val) {
   }
 
   return false
+}
+
+function shutdown() {
+  console.log('Shutting down')
+  console.log('Closing web server')
+
+  server.close(function () {
+    console.log('Web server closed')
+    database.terminatePool(function () {
+      console.log('Exiting process')
+      process.exit(0)
+    })
+  })
+  for (var key in openHttpConnections) {
+    openHttpConnections[key].destroy()
+  }
 }
