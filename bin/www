@@ -43,7 +43,7 @@ if (cluster.isMaster) {
    * Create HTTP server.
    */
 
-  var server = http.createServer(app)
+  server = http.createServer(app)
 
   /**
    * Listen on provided port, on all network interfaces.
