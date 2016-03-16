@@ -29,6 +29,7 @@ function terminatePool (cb) {
       pool.terminate(function (err) {
         console.error(err)
         pool = null
+        console.log('Pool is terminated')
         cb()
       })
     })
