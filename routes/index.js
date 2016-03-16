@@ -26,7 +26,9 @@ router.post('/graph', function (req, res, next) {
   var type = req.body.type
   var data = req.body.data
   if (funcMap.hasOwnProperty(type)) {
-    funcMap[type](data, res.send)
+    funcMap[type](data, function (result) {
+      res.send(result)
+    })
   } else {
     res.send([])
   }
