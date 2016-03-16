@@ -26,9 +26,7 @@ router.post('/graph', function (req, res, next) {
   var type = req.body.type
   var data = req.body.data
   if (funcMap.hasOwnProperty(type)) {
-    funcMap[type](data, function (result) {
-      res.send(result)
-    })
+    funcMap[type](data, res.send)
   } else {
     res.send([])
   }
@@ -47,7 +45,10 @@ function getNyukojisseki (data, cb) {
               ' GROUP BY shn_hiscd, konpo_shaba, NK_YMD ORDER BY shn_hiscd'
 
   model(query, data, function (err, rows) {
-    if (err) return console.error(err)
+    if (err) {
+      cb([])
+      return console.error(err)
+    }
     if (rows.length > 0) {
       result = result.concat(rows)
     } else {
@@ -77,7 +78,10 @@ function getShuritu (data, cb) {
               ' GROUP BY jz_ymd ORDER BY jz_ymd'
 
   model(query, data, function (err, rows) {
-    if (err) return console.error(err)
+    if (err) {
+      cb([])
+      return console.error(err)
+    }
     if (rows.length > 0) {
       result = result.concat(rows)
     } else {

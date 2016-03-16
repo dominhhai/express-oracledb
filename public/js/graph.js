@@ -54,6 +54,12 @@ function buildReqData (gEle) {
 }
 
 function renderGraph (gEle, data) {
+  if (data === null || data.length === 0) {
+    var jEle = $('#' + gEle)
+    jEle.css('height', '100%')
+    jEle.html('NO DATA')
+    return console.log('no data')
+  }
   if (graphFuncMap.hasOwnProperty(gEle)) {
     graphFuncMap[gEle][1](gEle, data)
   } else {
