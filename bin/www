@@ -6,11 +6,27 @@
 
 var cluster = require('cluster')
 var app = require('../app')
-var debug = require('debug')('graph:server')
+var debug = require('debug')('demo')
 var http = require('http')
 var database = require('../models/db')
 var server
 var openHttpConnections = {}
+
+/**
+ * make a log directory, just in case it isn't there.
+ */
+try {
+  require('fs').mkdirSync('./logs')
+} catch (e) {
+  if (e.code != 'EEXIST') {
+    console.error("Could not set up log directory, error was: ", e)
+    process.exit(1)
+  }
+}
+
+var log4js = require('log4js')
+log4js.configure('./log4js.json')
+var log = log4js.getLogger("startup")
 
 /**
  * Get port from environment and store in Express.
@@ -27,17 +43,17 @@ if (cluster.isMaster) {
   }
 
   cluster.on('online', function (worker, code, signal) {
-    console.log('Worker ' + worker.id + ' is online')
+    log.info('Worker ' + worker.id + ' is online')
   })
 
   cluster.on('disconnect', function (worker, code, signal) {
-    console.error('Worker ' + worker.id + ' disconnect')
+    log.error('Worker ' + worker.id + ' disconnect')
   })
 
   cluster.on('exit', function (worker, code, signal) {
-    console.error('Worker ' + worker.id + ' exited')
+    log.error('Worker ' + worker.id + ' exited')
     cluster.fork()
-    console.log('Forked new worker')
+    log.info('Forked new worker')
   })
 
 } else {
@@ -62,11 +78,11 @@ if (cluster.isMaster) {
     // handle specific listen errors with friendly messages
     switch (error.code) {
       case 'EACCES':
-        console.error(bind + ' requires elevated privileges')
+        log.error(bind + ' requires elevated privileges')
         shutdown()
         break
       case 'EADDRINUSE':
-        console.error(bind + ' is already in use')
+        log.error(bind + ' is already in use')
         shutdown()
         break
       default:
@@ -77,7 +93,7 @@ if (cluster.isMaster) {
   server.on('listening', function () {
     var addr = server.address()
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-    console.log('Woker(' + cluster.worker.id + ') Listening on ' + bind)
+    log.info('Woker(' + cluster.worker.id + ') Listening on ' + bind)
   })
 
   server.on('connection', function(conn) {
@@ -89,17 +105,17 @@ if (cluster.isMaster) {
   })
 
   process.on('uncaughtException', function(err) {
-    console.error('Uncaught exception ', err)
+    log.error('Uncaught exception ', err)
     shutdown()
   })
 
   process.on('SIGTERM', function () {
-    console.log('Received SIGTERM')
+    log.info('Received SIGTERM')
     shutdown()
   })
 
   process.on('SIGINT', function () {
-    console.log('Received SIGINT')
+    log.info('Received SIGINT')
     shutdown()
   })
 }
@@ -125,13 +141,13 @@ function normalizePort(val) {
 }
 
 function shutdown() {
-  console.log('Shutting down')
-  console.log('Closing web server')
+  log.info('Shutting down')
+  log.info('Closing web server')
 
   server.close(function () {
-    console.log('Web server closed')
+    log.info('Web server closed')
     database.terminatePool(function () {
-      console.log('Exiting process')
+      log.info('Exiting process')
       process.exit(0)
     })
   })
