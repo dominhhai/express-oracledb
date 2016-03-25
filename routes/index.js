@@ -71,23 +71,27 @@ function getNyuko (req, cb) {
     //  [     達成量合計,    null,    null, 入庫済み, 在庫量]
     // ]
     var result = []
-    var empty = ['', null, null, null, null]
+    var empty = ['', null, null, null, null, null, null]
     for (var his in data) {
       if (data.hasOwnProperty(his)) {
         if (result.length > 0) {
           result.push(empty)
         }
         var val = data[his]
+        var planTotal = val.plan.total || 0
+        var nzkTotal = val.total || 0
         result.push([
-          his + '　' + (val.plan.total || 0),
+          his,
           val.plan[req.ym_from] || 0,
           val.plan[req.ym_to] || 0,
-          null, null
+          null, null,
+          0.1, planTotal.toLocaleString()
         ], [
-          '' + (val.total || 0),
+          '達成量',
           null, null,
           val.nk || 0,
-          val.zk || 0
+          val.zk || 0,
+          0.1, nzkTotal.toLocaleString()
         ])
       }
     }

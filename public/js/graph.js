@@ -22,17 +22,11 @@ window.onresize = function (e) {
   var slideTitleHeight = $('.slide-title').outerHeight()
   var chartTitleHeight = $('.chart_title').outerHeight()
   var chartHight = slideHeight - slideTitleHeight - chartTitleHeight - 15
-  var slideControlsHeight = slideHeight - 60
   $('.chart-content').height(chartHight)
-  $('.reveal .controls').css('top', slideControlsHeight)
-  $('.reveal .playback').css('top', slideControlsHeight)
-  $('.slides section').css('top', '')
 
   clearTimeout(resizeTimer)
   // Run code here, resizing has "stopped"
   resizeTimer = setTimeout(function() {
-    $('.message').width($('section').width())
-    $('.chart-content').width($('.message .chart-container').width())
     redrawGraph()
   }, 5)
 }
@@ -40,6 +34,7 @@ window.onresize = function (e) {
 Reveal.initialize({
   width: '100%',
   height: '100%',
+  margin: 0,
   autoSlide: SLIDE_TIME,
   loop: true,
   dependencies: [
@@ -65,9 +60,10 @@ function refreshData () {
   setDate()
   // console.log('Fetch New Data at', new Date())
   counter = graphs.length
-  graphs.forEach(function (ele) {
-    loadGraphData(ele)
-  })
+  // graphs.forEach(function (ele) {
+  //   loadGraphData(ele)
+  // })
+  test()
 }
 
 function setDate () {
@@ -274,6 +270,8 @@ function renderChartIccNyuko (gEle, data, graph) {
   graphData.addColumn('number', parseInt(nextMonth.substr(5, 2)) + '月の計画')
   graphData.addColumn('number', '入庫済み')
   graphData.addColumn('number', '在庫')
+  graphData.addColumn('number', '合計')
+  graphData.addColumn({type: 'string', role:'annotation'})
   graphData.addRows(data)
 
   var options = graph.opt || {
@@ -282,6 +280,17 @@ function renderChartIccNyuko (gEle, data, graph) {
     hAxis: {
       title: '入庫量（ｍ）',
       titleTextStyle: { bold: true, italic: false }
+    },
+    annotations: {
+      alwaysOutside: true,
+      textStyle: { color: 'black' }
+    },
+    series: {
+      4: {
+        visibleInLegend: false,
+        color: 'white',
+        enableInteractivity: false
+      }
     },
     bar: { groupWidth: '99%' },
     chartArea: getChartIccNyukoArea(gEle),
@@ -299,10 +308,10 @@ function getChartIccNyukoArea (gEle) {
   var chartWidth = ele.width()
   var chartHeight = ele.height()
   var top = 30
-  var left = 100
+  var left = 150
   var right = 2
   var bottom = 50
-  var areaWidth = chartWidth - left - right
+  var areaWidth = '100%'//chartWidth - left - right
   var areaHeight = chartHeight - top - bottom
   return { left: left, width: areaWidth, height: areaHeight }
 }
@@ -367,3 +376,15 @@ function buildChartLpaNyukoReqData (gEle) {
   return data
 }
 // ▲LpAグラフ
+
+function test() {
+  // barchart
+  var data = [
+    ['abac', 100, 200, null, null, 0.1, '0'],
+    ['達成量', null, null, 430, 213, 0.1, '1,000'],
+    ['', null, null, null, null, null, null],
+    ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
+    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+  ]
+  renderChartIccNyuko('chart_icc_nyuko', data)
+}
