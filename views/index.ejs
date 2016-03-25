@@ -1,9 +1,64 @@
 <!DOCTYPE html>
 <% include common/header %>
-  <a id="g_nk" class="btn btn-primary" href="#" role="button">入庫実績グラフ</a>
-  <a id="g_shuritu" class="btn btn-info" href="#" role="button">収率グラフ</a>
-  <main>
-      <div class="chart" id="chart_scatter" style="width: 900px; height: 500px;"></div>
-      <div class="chart" id="chart_column" style="width: 900px; height: 500px;"></div>
-  </main>
+<div class="reveal">
+  <div class="slides" id="slides">
+    <!-- ICC -->
+    <section id="icc">
+      <div class="slide-title"><b>ICC</b></div>
+      <div class="table">
+        <div class="chart-container border">
+          <p class="chart_title border shuritu">検反収率</p>
+          <div class="chart-content" id="chart_icc_syuritu"></div>
+        </div>
+        <div class="chart-container border">
+          <p class="chart_title border nyuko">入庫実績</p>
+          <div class="chart-content" id="chart_icc_nyuko"></div>
+        </div>
+      </div>
+    </section>
+    <!-- TSA -->
+    <section id="tsa">
+      <section>
+        <div class="slide-title"><b>TSA</b></div>
+        <div class="table">
+          <div class="chart-container border">
+            <p class="chart_title border shuritu">検反収率</p>
+            <div class="chart-content" id="chart_tsa_syuritu"></div>
+          </div>
+          <div class="chart-container border">
+           <p class="chart_title border nyuko">入庫実績</p>
+           <div class="chart-content" id="chart_tsa_nyuko"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+    <!-- LPA -->
+    <section id="lpa">
+      <div class="slide-title"><b>LPA</b></div>
+      <div class="table">
+        <div class="chart-container border">
+         <p class="chart_title border shuritu">検反収率</p>
+         <div class="chart-content" id="chart_lpa_syuritu"></div>
+        </div>
+        <div class="chart-container border">
+         <p class="chart_title border nyuko">入庫実績</p>
+         <div class="chart-content" id="chart_lpa_nyuko"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="message">
+  <div class="view_port">
+    <span><%-msg.content %></span>
+  </div>
+ <!-- <div class="chart-container border">
+   <p class="messege-title border"><%-msg.syuritu_title %></p>
+   <p class="messege-content"><%-msg.syuritu_content %></p>
+  </div>
+ <div class="chart-container border">
+   <p class="messege-title border"><%-msg.nyuko_title %></p>
+   <p class="messege-content"><%-msg.nyuko_content %></p>
+  </div> -->
+</div>
 <% include common/footer %>

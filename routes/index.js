@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const model = require('../models/model')
+const syuritu = require('../models/syuritu')
+const nyuko = require('../models/nyuko')
+const config = require('../config')
 const funcMap = {
-  nk: getNyukojisseki,
-  shuritu: getShuritu
+  syuritu: getSyuritu,
+  nyuko: getNyuko
 }
 
 router.use(function (req, res, next) {
@@ -14,10 +16,23 @@ router.use(function (req, res, next) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   var view = {
-    jsScripts: [
-      '<script src="https://www.google.com/jsapi?autoload={\'modules\':[{\'name\':\'visualization\',\'version\':\'1.0\',\'packages\':[\'corechart\']}]}"></script>',
+    stylesheets: [
+      '/reveal/css/reveal',
+      '/reveal/css/theme/simple'
+    ], jsScripts: [
+      // '<script src="https://www.google.com/jsapi?autoload={\'modules\':[{\'name\':\'visualization\',\'version\':\'1.0\',\'packages\':[\'corechart\']}]}"></script>',
+      '<script src="/google/corechart.js"></script>',
+      '<script src="/reveal/lib/head.min.js"></script>',
+      '<script src="/reveal/reveal.js"></script>',
+      '<script>var REFRESH_TIME = '+ config.chart.refresh_time +
+        ';var NUM_ERRORS = '+ config.chart.get_data_num_errors +
+        ';var SLIDE_TIME = '+ config.chart.slide_time +
+      '</script>',
       '<script src="/js/graph.js"></script>'
-    ]
+    ], msg: {
+      title: '操業トピックス',
+      content: '・ＴＰＩ　お客様評価中 結果良好であれば再開予定'
+    }
   }
   res.render('index', view)
 })
@@ -26,67 +41,58 @@ router.post('/graph', function (req, res, next) {
   var type = req.body.type
   var data = req.body.data
   if (funcMap.hasOwnProperty(type)) {
-    funcMap[type](data, res.send)
+    funcMap[type](data, function (result) {
+      res.send(result)
+    })
   } else {
     res.send([])
   }
 })
 
-function getNyukojisseki (data, cb) {
-  var result = []
-
-  var query = 'SELECT shn_hiscd, konpo_shaba, sum(KONPO_LEN),' +
-              ' sum(KONPO_SRY), TO_CHAR(NK_YMD, \'yyyy/mm/dd\')' +
-              ' FROM enstdnyulg' +
-              ' WHERE shn_cd = :shn_cd' +
-              ' AND NK_KBN = :nk_kbn' +
-              ' AND NK_YMD >= TO_DATE(:nk_ymd_from, \'yyyy/mm/dd\')' +
-              ' AND NK_YMD <= TO_DATE(:nk_ymd_to, \'yyyy/mm/dd\')' +
-              ' GROUP BY shn_hiscd, konpo_shaba, NK_YMD ORDER BY shn_hiscd'
-
-  model(query, data, function (err, rows) {
-    if (err) {
-      cb([])
-      return console.error(err)
-    }
-    if (rows.length > 0) {
-      result = result.concat(rows)
-    } else {
-      cb(result)
-    }
+function getSyuritu (req, cb) {
+  syuritu(req, function (data) {
+    // result[ ...[日付, 収率, 収率の表示, 目標値]  ]
+    // 収率の表示：本日のデータしか表示しない
+    var target = data.tg
+    var result = data.rt.map(function (val) {
+      val.push(val[0] === req.ymd_to ? val[1] : null, null)
+      return val
+    })
+    result.push([req.ymd_from, null, null, target])
+    result.push([req.ymd_to, null, null, target])
+    cb(result)
   })
 }
 
-function getShuritu (data, cb) {
-  var result = []
-
-  var proCds = data['pro_cd_0']
-  var proCdQuery = ''
-  for (var i in proCds) {
-    var key = 'pro_cd_' + i
-    proCdQuery += (i > 0 ? ', :' : ':') + key
-    data[key] = proCds[i]
-  }
-  var query = 'SELECT TO_CHAR(jz_ymd, \'yyyy/mm/dd\'),' +
-              ' ROUND(SUM(s_ryo) / SUM(tny_ryo),2) * 100 syuritu' +
-              ' FROM enstdsgnpo sgn' +
-              ' LEFT JOIN enstmshins his ON sgn.S_HISCD = his.SHN_HISCD' +
-              ' WHERE shn_cd = :shn_cd' +
-              ' AND pro_cd IN(' + proCdQuery + ')' +
-              ' AND JZ_YMD >= TO_DATE(:jz_ymd_from, \'yyyy/mm/dd\')' +
-              ' AND JZ_YMD <= TO_DATE(:jz_ymd_to, \'yyyy/mm/dd\')' +
-              ' GROUP BY jz_ymd ORDER BY jz_ymd'
-
-  model(query, data, function (err, rows) {
-    if (err) {
-      cb([])
-      return console.error(err)
+function getNyuko (req, cb) {
+  nyuko(req, function (data) {
+    // result[ ...
+    //  [品種　計画量合計, 今計画量, 次計画量,   null,   null]
+    //  [     達成量合計,    null,    null, 入庫済み, 在庫量]
+    // ]
+    var result = []
+    var empty = ['', null, null, null, null]
+    for (var his in data) {
+      if (data.hasOwnProperty(his)) {
+        if (result.length > 0) {
+          result.push(empty)
+        }
+        var val = data[his]
+        result.push([
+          his + '　' + (val.plan.total || 0),
+          val.plan[req.ym_from] || 0,
+          val.plan[req.ym_to] || 0,
+          null, null
+        ], [
+          '' + (val.total || 0),
+          null, null,
+          val.nk || 0,
+          val.zk || 0
+        ])
+      }
     }
-    if (rows.length > 0) {
-      result = result.concat(rows)
-    } else {
-      cb(result)
-    }
+
+    cb(result)
   })
 }
 

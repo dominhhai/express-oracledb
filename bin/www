@@ -8,15 +8,17 @@ var cluster = require('cluster')
 var app = require('../app')
 var debug = require('debug')('graph:server')
 var http = require('http')
-var database = require('../models/model')
+var database = require('../models/db')
 var server
 var openHttpConnections = {}
+
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
+
 
 if (cluster.isMaster) {
   var cpuCount = require('os').cpus().length
@@ -43,7 +45,7 @@ if (cluster.isMaster) {
    * Create HTTP server.
    */
 
-  var server = http.createServer(app)
+  server = http.createServer(app)
 
   /**
    * Listen on provided port, on all network interfaces.

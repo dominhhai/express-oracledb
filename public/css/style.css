@@ -1,7 +1,125 @@
+.reveal {
+  height: 80% !important;
+}
+.reveal .slides {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.reveal .slides section {
+  padding: 0 !important;
+}
+.reveal p {
+  margin-bottom: 0 !important;
+}
+.slide-title {
+  background-color: rgb(37, 81, 135);
+  color: white;
+}
+.table {
+  display:table;
+  border-collapse:separate;
+  border-spacing: 2px 0;
+  width: 100%;
+  margin-top: 3px !important;
+}
 .chart-container {
- text-align: "center"   
+  display: table-cell;
+  width: 49%;
+  height: 100%;
+}
+.border {
+  border:solid 2px rgb(56, 93, 138) !important;
+  border-radius: 5px;
+}
+.chart_title {
+  background-color: rgb(255, 204, 155);
+  margin-top: 3px !important;
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+.chart-content {
+  width: 100%;
+  height: 100%;
+}
+.nv-axislabel {
+  font-weight: bold !important;
+}
+.message {
+  display: table;
+  border-collapse:separate;
+  border-spacing: 2px 0;
+  margin: 0 auto;
+  word-wrap: break-word;
+}
+.message p {
+  color: #000;
+  font-family: "News Cycle", Impact, sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-transform: none;
+  text-shadow: none;
+}
+.messege-title {
+  background-color: rgb(255, 204, 155);
+  margin-top: 3px !important;
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+  margin-bottom: 0 !important;
+  text-align: center;
+}
+.messege-content {
+  margin-top: 0 !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
 }
 
-.chart {
-    /*display: inline;*/
+@-webkit-keyframes scroll {
+  0% {
+    -webkit-transform: translate(0, 0);
+  }
+  100% {
+    -webkit-transform: translate(-100%, 0);
+  }
+}
+@-moz-keyframes scroll {
+  0% {
+    -moz-transform: translate(0, 0);
+  }
+  100% {
+    -moz-transform: translate(-100%, 0);
+  }
+}
+@-o-keyframes scroll {
+  0% {
+    -o-transform: translate(0, 0);
+  }
+  100% {
+    -o-transform: translate(-100%, 0);
+  }
+}
+@keyframes scroll {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+.view_port {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.view_port span {
+  display: inline-block;
+  padding-left: 100%;
+  -webkit-animation: scroll 30s infinite linear;
+     -moz-animation: scroll 30s infinite linear;
+       -o-animation: scroll 30s infinite linear;
+          animation: scroll 30s infinite linear;
 }

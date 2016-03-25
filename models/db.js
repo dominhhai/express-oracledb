@@ -1,6 +1,5 @@
 const oracledb = require('oracledb')
-const dbconfig = require('../dbconfig')
-const messages = require('./messages')
+const config = require('../config')
 var pool = null
 var openConnections = []
 
@@ -8,13 +7,13 @@ function createPool (cb) {
   if (pool) return cb()
   console.log('create a new pool')
   var authInfo = {
-    user: dbconfig.user,
-    password: dbconfig.password,
-    connectString: dbconfig.connectString
+    user: config.oracledb.user,
+    password: config.oracledb.password,
+    connectString: config.oracledb.connectString
   }
   oracledb.createPool(authInfo, function (err, _pool) {
     if (err) {
-      console.error(messages.ERR_DB_GET_POOL)
+      console.error(config.messages.ERR_DB_GET_POOL)
       return cb(err)
     }
     console.log('created a new pool successfully')
@@ -25,9 +24,10 @@ function createPool (cb) {
 
 function terminatePool (cb) {
   if (pool) {
+    console.log('terminate pool')
     releaseOpenConnections(function () {
       pool.terminate(function (err) {
-        console.error(err)
+        if (err) console.error(err)
         pool = null
         console.log('Pool is terminated')
         cb()
@@ -56,7 +56,7 @@ function execute (query, params, cb, numRows) {
     console.log('・query:', query, '\n・params:', params)
     connection.execute(query, params, { resultSet: true }, function (err, result) {
       if (err) return cb(err.message)
-      numRows = numRows || dbconfig.numRows
+      numRows = numRows || config.oracledb.numRows
       // use `cursor` when executing PLSQL function/proceduces
       var resultSet = result.resultSet || result.outBinds.cursor
       fetchRowsFromRS(connection, resultSet, numRows, cb)
@@ -69,7 +69,7 @@ function getConnection (cb) {
     if (err)  return cb(err)
     pool.getConnection(function (err, connection) {
       if (err) {
-        console.error(messages.ERR_DB_GET_CONNECTION)
+        console.error(config.messages.ERR_DB_GET_CONNECTION)
         return cb(err)
       }
       openConnections.push(connection)
@@ -110,7 +110,23 @@ function fetchRowsFromRS (connection, resultSet, numRows, cb) {
   })
 }
 
-exports = module.exports = execute
+function simpleExecute (query, params, cb, numRows) {
+  var result = []
+  execute(query, params, function (err, rows) {
+    if (err) {
+      console.error(err)
+      return cb([])
+    }
+    if (rows.length > 0) {
+      result = result.concat(rows)
+    } else {
+      cb(result)
+    }
+  }, numRows)
+}
+
+exports = module.exports = simpleExecute
+exports.execute = execute
 exports.createPool = createPool
 exports.terminatePool = terminatePool
 exports.getConnection = getConnection
