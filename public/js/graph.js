@@ -82,6 +82,7 @@ function setDate () {
   nextMonth = nextYmd.y + '/' + nextYmd.mm
 
   if (_today !== today) {
+    $('.slide-title .today').text(curYmd.y + '年' + curYmd.m + '月' + curYmd.d + '日')
     $('.shuritu').text('検反収率　' + preYmd.m + '/' + preYmd.d + '～' + curYmd.m + '/' + curYmd.d)
     $('.nyuko').text('入庫実績　' + curYmd.y + '年' + curYmd.m + '月')
   }

@@ -32,6 +32,9 @@ router.get('/', function (req, res, next) {
     ], msg: {
       title: '操業トピックス',
       content: '・ＴＰＩ　お客様評価中 結果良好であれば再開予定'
+    }, bumon: {
+      b: '電生部門',
+      g: '実装材管理グループ'
     }
   }
   res.render('index', view)

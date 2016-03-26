@@ -17,6 +17,17 @@
 .slide-title {
   background-color: rgb(37, 81, 135);
   color: white;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+.slide-title .left, .slide-title .right {
+  font-size: 18px;
+}
+.slide-title .left {
+  float: left;
+}
+.slide-title .right {
+  float: right;
 }
 .table {
   display:table;
