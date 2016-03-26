@@ -308,7 +308,7 @@ function getChartIccNyukoArea (gEle) {
   var chartWidth = ele.width()
   var chartHeight = ele.height()
   var top = 30
-  var left = 150
+  var left = 250
   var right = 2
   var bottom = 50
   var areaWidth = '100%'//chartWidth - left - right
@@ -380,56 +380,56 @@ function buildChartLpaNyukoReqData (gEle) {
 function test() {
   // barchart
   var data = [
-    ['abac', 100, 200, null, null, 0.1, '0'],
-    ['達成量', null, null, 430, 213, 0.1, '1,000'],
+    ['ABCDEFGHJKLREQHA　9999mm', 100, 200, null, null, 0.1, '0'],
+    ['', null, null, 430, 213, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
     ['', null, null, null, null, null, null],
     ['defgaaa', 520, 307, null, null, 0.1, '40,000'],
-    ['達成量', null, null, 221, 113, 0.1, '1,000'],
+    ['', null, null, 221, 113, 0.1, '1,000'],
   ]
   renderChartIccNyuko('chart_icc_nyuko', data)
 }

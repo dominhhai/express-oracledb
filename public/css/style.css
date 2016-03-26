@@ -27,7 +27,13 @@
 }
 .chart-container {
   display: table-cell;
-  width: 49%;
+  /*width: 49%;*/
+}
+.table .cell-left {
+  width: 46%;
+}
+.table .cell-right {
+  width: 53%;
 }
 .border {
   border:solid 2px rgb(56, 93, 138) !important;
