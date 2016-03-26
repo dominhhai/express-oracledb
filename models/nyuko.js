@@ -92,20 +92,20 @@ function getPlan (vals, cb) {
 }
 
 function getNyuko (vals, cb) {
-  var searchQuery = ' FROM enstdnyulg' +
-                    ' WHERE shn_cd = :shn_cd' +
+  var searchQuery = ' FROM ENSTDNYULG' +
+                    ' WHERE SHN_CD = :shn_cd' +
                     ' AND NK_KBN = :nk_kbn' +
                     ' AND NK_YMD >= TO_DATE(:nk_ymd_from, \'yyyy/mm/dd\')' +
                     ' AND NK_YMD < TO_DATE(:nk_ymd_to, \'yyyy/mm/dd\')'
   var query = vals.shn_cd === config.shnCds.icc ?
-                'SELECT TRIM(shn_hiscd), sum(KONPO_LEN)' +
+                'SELECT TRIM(SHN_HISCD), SUM(KONPO_LEN)' +
                 searchQuery +
-                ' GROUP BY shn_hiscd ORDER BY shn_hiscd'
+                ' GROUP BY SHN_HISCD ORDER BY SHN_HISCD'
               :
-                'SELECT TRIM(shn_hiscd || konpo_shaba) || \'mm\' HIS_HABA' +
+                'SELECT TRIM(sHN_HISCD || KONPO_SHABA) || \'mm\' HIS_HABA' +
                 ', SUM(KONPO_LEN)' +
                 searchQuery +
-                ' GROUP BY shn_hiscd, konpo_shaba ORDER BY HIS_HABA'
+                ' GROUP BY SHN_HISCD, KONPO_SHABA ORDER BY HIS_HABA'
   db(query, vals, cb)
 }
 
