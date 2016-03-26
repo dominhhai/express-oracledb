@@ -2,69 +2,33 @@
 <% include common/header %>
 <div class="reveal">
   <div class="slides" id="slides">
-    <!-- ICC -->
-    <section id="icc">
-      <div class="slide-title">
-        <div class="left">
-          <div><%= bumon.b %></div><div><%= bumon.g %></div>
-        </div>
-        <b>ICC</b>
-        <div class="right today">年月日</div>
-      </div>
-      <div style="clear: both;"></div>
-      <div class="table">
-        <div class="chart-container cell-left border">
-          <p class="chart_title border shuritu">検反収率</p>
-          <div class="chart-content" id="chart_icc_syuritu"></div>
-        </div>
-        <div class="chart-container cell-right border">
-          <p class="chart_title border nyuko">入庫実績</p>
-          <div class="chart-content" id="chart_icc_nyuko"></div>
-        </div>
-      </div>
-    </section>
-    <!-- TSA -->
-    <section id="tsa">
-      <section>
-        <div class="slide-title">
-          <div class="left">
-            <div><%= bumon.b %></div><div><%= bumon.g %></div>
+    <% var slide = ['icc', 'tsa', 'lpa']
+      slide.forEach(function (id) {
+        var upperCaseID = id.toUpperCase()
+      %>
+        <!-- <%- upperCaseID %> -->
+        <section id="<%- id %>">
+          <div class="slide-title">
+            <div class="left">
+              <div><%= bumon.b %></div><div><%= bumon.g %></div>
+            </div>
+            <b><%- upperCaseID %></b>
+            <div class="right today">年月日</div>
           </div>
-          <b>TSA</b>
-          <div class="right today">年月日</div>
-        </div>
-        <div class="table">
-          <div class="chart-container cell-left border">
-            <p class="chart_title border shuritu">検反収率</p>
-            <div class="chart-content" id="chart_tsa_syuritu"></div>
+          <div style="clear: both;"></div>
+          <div class="table">
+            <div class="chart-container cell-left border">
+              <p class="chart_title border shuritu">検反収率</p>
+              <div class="chart-content" id="chart_<%- id %>_syuritu"></div>
+            </div>
+            <div class="chart-container cell-right border">
+              <p class="chart_title border nyuko">入庫実績</p>
+              <div class="chart-content" id="chart_<%- id %>_nyuko"></div>
+            </div>
           </div>
-          <div class="chart-container cell-right border">
-           <p class="chart_title border nyuko">入庫実績</p>
-           <div class="chart-content" id="chart_tsa_nyuko"></div>
-          </div>
-        </div>
-      </section>
-    </section>
-    <!-- LPA -->
-    <section id="lpa">
-      <div class="slide-title">
-        <div class="left">
-          <div><%= bumon.b %></div><div><%= bumon.g %></div>
-        </div>
-        <b>LPA</b>
-        <div class="right today">年月日</div>
-      </div>
-      <div class="table">
-        <div class="chart-container cell-left border">
-         <p class="chart_title border shuritu">検反収率</p>
-         <div class="chart-content" id="chart_lpa_syuritu"></div>
-        </div>
-        <div class="chart-container cell-right border">
-         <p class="chart_title border nyuko">入庫実績</p>
-         <div class="chart-content" id="chart_lpa_nyuko"></div>
-        </div>
-      </div>
-    </section>
+        </section>
+      <% })
+    %>
   </div>
 </div>
 <div class="message">
