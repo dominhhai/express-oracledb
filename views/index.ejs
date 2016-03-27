@@ -1,37 +1,6 @@
 <!DOCTYPE html>
 <% include common/header %>
-<div class="reveal">
-  <div class="slides" id="slides">
-    <% var slide = ['icc', 'tsa', 'lpa']
-      slide.forEach(function (id) {
-        var upperCaseID = id.toUpperCase()
-      %>
-        <!-- <%- upperCaseID %> -->
-        <section id="<%- id %>">
-          <div class="slide-title">
-            <div class="left">
-              <div><%= bumon.b %></div><div><%= bumon.g %></div>
-            </div>
-            <b><%- upperCaseID %></b>
-            <div class="right today">年月日</div>
-          </div>
-          <div style="clear: both;"></div>
-          <div class="table">
-            <div class="chart-container cell-left border">
-              <p class="chart_title border shuritu">検反収率</p>
-              <div class="chart-content" id="chart_<%- id %>_syuritu"></div>
-            </div>
-            <div class="chart-container cell-right border">
-              <p class="chart_title border nyuko">入庫実績</p>
-              <div class="chart-content" id="chart_<%- id %>_nyuko"></div>
-            </div>
-          </div>
-        </section>
-      <% })
-    %>
-  </div>
-</div>
 <div class="message">
-  <p><%= msg.content %></p>
+  <p>HI <%= username %></p>
 </div>
 <% include common/footer %>

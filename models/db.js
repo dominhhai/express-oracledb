@@ -1,4 +1,4 @@
-const oracledb = {}//require('oracledb')
+const oracledb = require('oracledb')
 const config = require('../config/config')
 var log = require('log4js').getLogger('db')
 var pool = null

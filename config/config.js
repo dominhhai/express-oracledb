@@ -16,18 +16,7 @@ module.exports = {
     numRows: 20
   },
   messages: {
-    ERR_DB_GET_POOL: 'DBに接続できないかPOOLを取得できないため、クエリを実行できません。',
-    ERR_DB_GET_CONNECTION: 'DBに接続できないかCONNECTIONを取得できないため、クエリを実行できません。'
-  },
-  chart: {
-    slide_time: 10000,
-    refresh_time: 100000,
-    get_data_num_errors: 5
-  },
-  shnCds: {
-    icc: '2922',
-    tsa: '2924',
-    lpa: '2926',
-    tpi: '2927'
+    ERR_DB_GET_POOL: 'Can not connect to DB or get POOL fail.',
+    ERR_DB_GET_CONNECTION: 'Can not connect to DB or get CONNECTION fail.'
   }
 }
