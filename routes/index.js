@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const syuritu = require('../models/syuritu')
 const nyuko = require('../models/nyuko')
-const config = require('../config')
+const config = require('../config/config')
 const funcMap = {
   syuritu: getSyuritu,
   nyuko: getNyuko
@@ -88,13 +88,13 @@ function getNyuko (req, cb) {
           val.plan[req.ym_from] || 0,
           val.plan[req.ym_to] || 0,
           null, null,
-          0.1, planTotal.toLocaleString()
+          0.001, planTotal.toLocaleString()
         ], [
-          '達成量',
+          '',
           null, null,
           val.nk || 0,
           val.zk || 0,
-          0.1, nzkTotal.toLocaleString()
+          0.001, nzkTotal.toLocaleString()
         ])
       }
     }

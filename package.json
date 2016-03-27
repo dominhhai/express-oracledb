@@ -29,6 +29,7 @@
     "oracledb": "^1.7.1"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
     "nodemon": "^1.8.1"
   }
 }

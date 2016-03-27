@@ -25,14 +25,14 @@ try {
 }
 
 var log4js = require('log4js')
-log4js.configure('./log4js.json')
+log4js.configure('./config/log4js.json')
 var log = log4js.getLogger("startup")
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(require('../config').port)
+var port = normalizePort(require('../config/config').port)
 app.set('port', port)
 
 
