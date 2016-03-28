@@ -5,6 +5,7 @@
  */
 
 var cluster = require('cluster')
+var path = require('path')
 var app = require('../app')
 var debug = require('debug')('demo')
 var http = require('http')
@@ -12,11 +13,13 @@ var database = require('../models/db')
 var server
 var openHttpConnections = {}
 
+var appDir = path.resolve(__dirname, '..')
+var logDir = path.join(appDir, 'logs')
 /**
  * make a log directory, just in case it isn't there.
  */
 try {
-  require('fs').mkdirSync('./logs')
+  require('fs').mkdirSync(logDir)
 } catch (e) {
   if (e.code != 'EEXIST') {
     console.error("Could not set up log directory, error was: ", e)
@@ -25,7 +28,7 @@ try {
 }
 
 var log4js = require('log4js')
-log4js.configure('./config/log4js.json')
+log4js.configure(path.join(appDir, 'config/log4js.json'), {cwd: logDir})
 var log = log4js.getLogger("startup")
 
 /**
