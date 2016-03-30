@@ -13,7 +13,7 @@ var database = require('../models/db')
 var server
 var openHttpConnections = {}
 
-var appDir = path.resolve(__dirname, '..')
+var appDir = process.cwd()
 var logDir = path.join(appDir, 'logs')
 /**
  * make a log directory, just in case it isn't there.
@@ -28,7 +28,7 @@ try {
 }
 
 var log4js = require('log4js')
-log4js.configure(path.join(appDir, 'config/log4js.json'), {cwd: logDir})
+log4js.configure(path.join(appDir, 'config', 'log4js.json'), {cwd: logDir})
 var log = log4js.getLogger("startup")
 
 /**
